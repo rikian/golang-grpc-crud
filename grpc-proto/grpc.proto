@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package grpc_proto;
+
+option go_package = "grpc/crud;grpc_crud";
+
+service UserCrud {
+  rpc CreateNewUser (NewUser) returns (User) {}
+  rpc GetUsers (GetAllUsers) returns (UserList) {}
+  rpc GetUser (NewUser) returns (User) {}
+  rpc UpdateUser (NewDataUser) returns (User) {}
+  rpc DeleteUser (NewUser) returns (Status) {}
+}
+
+// GRPC request
+message NewUser {
+  string email = 1;
+  string password = 2;
+}
+
+message GetAllUsers {
+  string email = 1;
+  string password = 2;
+  string token = 3;
+}
+
+message NewDataUser {
+  string oldEmail = 1;
+  string newEmail = 2;
+  string oldPassword = 3;
+  string newPassword = 4;
+  string oldStatus = 5;
+  string newStatus = 6;
+}
+
+// GRPC response
+message User {
+  string id = 1;
+  string email = 2;
+  string password = 3;
+  string status = 4;
+}
+
+message UserList {
+  repeated User users = 1; 
+}
+
+message Status {
+  bool status = 1;
+  string message = 2;
+}
+
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative grpc-proto/grpc.proto
